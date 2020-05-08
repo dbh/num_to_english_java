@@ -119,4 +119,14 @@ class NumToEnglishServiceTest {
                 cut.converNumToEnglish("1345963").getNumInEnglish());
     }
 
+    @Test
+    public void invalid1Test() {
+        Assertions.assertTrue(cut.converNumToEnglish("ABC").getStatus().startsWith("error"));
+    }
+
+    @Test
+    public void invalid2Test() {
+        Assertions.assertTrue(cut.converNumToEnglish("0,1").getStatus().startsWith("error"));
+    }
+
 }

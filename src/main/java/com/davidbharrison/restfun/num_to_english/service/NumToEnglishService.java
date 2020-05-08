@@ -58,7 +58,6 @@ public class NumToEnglishService {
         }
         if (num==0) {
             sb.append("zero");
-            return;
         }
         if ((int)num/BIGGY.billion.divisor > 0) {
             recurse(sb, num/BIGGY.billion.divisor, BIGGY.billion.name());
@@ -99,17 +98,6 @@ public class NumToEnglishService {
             }
         }
     }
-//
-//    int newDivisor = divisor>1000
-//                ? divisor/1000
-//                : divisor==1000
-//                    ? 100
-//                    : divisor==10
-//                        ? 1
-//                        : 10;
-//
-//        recurse(sb, num%divisor, newDivisor);
-//    }
 
     private static void tenToNineteen(StringBuilder sb, Integer tenSomething) {
         var res =
@@ -133,11 +121,19 @@ public class NumToEnglishService {
     }
 
     public NumToEnglishResponse converNumToEnglish(String req) {
-        Integer num = Integer.valueOf(req);
+        Integer num = 0;
+        try {
+            num = Integer.parseInt(req);
+        }
+        catch (NumberFormatException e) {
+            String err = "error. input was not an integer";
+            log.warn(req);
+            return NumToEnglishResponse.builder()
+                    .status(err)
+                    .build();
+        }
 
         StringBuilder sb = new StringBuilder();
-
-//        recurse(sb, num, BIGGY.billion.divisor);
         recurse(sb, num, null);
         String english = sb.toString();
 
