@@ -34,7 +34,12 @@ This endpoint will convert any number given to it into the english words that de
 **status** is reserved for messaging back if the process succeeded or failed. Make sure to use that when handling errors.
 
 ### GET /number_to_eng_param?number=123
-Here's a better approach
+Here's a better approach.  Send the number as a parameter.
+
+### POST /num_to_english
+Use the same Request Payload as defined for the GET with the message body
+A POST of this data is better supported and more rational.  However, it might 
+cause some confusion because POST is usually for creating a new entity and that is not being done in this case.
 
 ## Additional Requirements:
 Treat this as a production endpoint you would publish.
