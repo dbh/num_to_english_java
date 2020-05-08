@@ -56,6 +56,8 @@ These would be necessary for production readiness
   * Authorization methodologies
     * Define needed granularity
   * Kubernetes,DC/OS,Helm-charts, etc
+  * API Versioning
+  * Swagger / OpenAPI specification
 
 
 ## Assumptions
