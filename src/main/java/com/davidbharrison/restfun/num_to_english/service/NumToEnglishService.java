@@ -52,7 +52,7 @@ public class NumToEnglishService {
         }
     }
 
-    public static void recurse(StringBuilder sb, Integer num, String name) {
+    public static void recurse(StringBuilder sb, int num, String name) {
         if (num<0) {
             return;
         }
@@ -99,7 +99,7 @@ public class NumToEnglishService {
         }
     }
 
-    private static void tenToNineteen(StringBuilder sb, Integer tenSomething) {
+    private static void tenToNineteen(StringBuilder sb, int tenSomething) {
         var res =
             switch(tenSomething) {
                 case 0 -> "ten";
@@ -121,12 +121,20 @@ public class NumToEnglishService {
     }
 
     public NumToEnglishResponse converNumToEnglish(String req) {
-        Integer num = 0;
+        long num = 0;
+        req = req.replace(",","");
         try {
-            num = Integer.parseInt(req);
+            num = Long.parseLong(req);
         }
         catch (NumberFormatException e) {
-            String err = "error. input was not an integer";
+            String err = "error. input was not an number";
+            log.warn(req);
+            return NumToEnglishResponse.builder()
+                    .status(err)
+                    .build();
+        }
+        if (num<0 || num>= Integer.MAX_VALUE) {
+            String err = "error. number is out of range. currently valie are 0 to "+Integer.MAX_VALUE;
             log.warn(req);
             return NumToEnglishResponse.builder()
                     .status(err)
@@ -134,7 +142,7 @@ public class NumToEnglishService {
         }
 
         StringBuilder sb = new StringBuilder();
-        recurse(sb, num, null);
+        recurse(sb, (int)num, null);
         String english = sb.toString();
 
         return NumToEnglishResponse.builder()

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.reflect.InvocationTargetException;
+
 @SpringBootTest
 class NumToEnglishServiceTest {
 
@@ -125,8 +127,30 @@ class NumToEnglishServiceTest {
     }
 
     @Test
-    public void invalid2Test() {
-        Assertions.assertTrue(cut.converNumToEnglish("0,1").getStatus().startsWith("error"));
+    public void numberCommaTest() {
+        Assertions.assertEquals(
+                "one hundred eleven thousand sixty three",
+                cut.converNumToEnglish("111,063").getNumInEnglish());
     }
 
+    @Test
+    public void zeroPrefixTest() {
+        Assertions.assertEquals(
+                "sixty three",
+                cut.converNumToEnglish("000063").getNumInEnglish());
+    }
+
+    @Test
+    public void tooSmallTest() {
+        Assertions.assertTrue(
+                cut.converNumToEnglish(String.valueOf(-1)).getStatus()
+                        .startsWith("error"));
+    }
+
+    @Test
+    public void tooBigTest() {
+        Assertions.assertTrue(
+                cut.converNumToEnglish(String.valueOf(Integer.MAX_VALUE+1)).getStatus()
+                        .startsWith("error"));
+    }
 }
